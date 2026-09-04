@@ -1,0 +1,25 @@
+/* humanstxt.org */
+/* The humans responsible & technology colophon */
+
+/* TEAM */
+Developer & Designer: Irvan Afriandi
+Twitter: @callme_ikoo
+Instagram: @callme_ikoo
+GitHub: github.com/rikorizky
+LinkedIn: linkedin.com/in/riko-rizky-baswara-921262338
+Location: Cirebon, Jawa Barat, Indonesia
+
+/* THANKS */
+Universitas Logistik dan Bisnis Internasional (ULBI)
+Badan Pusat Statistik Kota Cirebon
+
+/* SITE */
+Last update: 2026-08-17
+Language: Indonesian, English
+Doctype: HTML5
+IDE: VS Code
+Framework: React.js, Vite
+Standards: HTML5, CSS3, JavaScript ES2024
+Components: GSAP, React Router, FontAwesome
+Hosting: Vercel
+Domain: rikorizky.my.id

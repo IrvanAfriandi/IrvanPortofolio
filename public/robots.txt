@@ -1,0 +1,25 @@
+# robots.txt for https://rikorizky.my.id/
+# Irvan Afriandi - Web Developer & Frontend Engineer Portfolio
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Google
+User-agent: Googlebot
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+
+# Yahoo
+User-agent: Slurp
+Allow: /
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+
+# Sitemap location
+Sitemap: https://rikorizky.my.id/sitemap.xml

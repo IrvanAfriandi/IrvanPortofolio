@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Halaman utama portfolio Irvan Afriandi -->
+  <url>
+    <loc>https://rikorizky.my.id/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://rikorizky.my.id/img/profil.webp</image:loc>
+      <image:title>Irvan Afriandi - Foto Profil Web Developer &amp; Frontend Engineer</image:title>
+      <image:caption>Irvan Afriandi, Web Developer dan Frontend Engineer dari Cirebon, Indonesia.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://rikorizky.my.id/img/LandingPage.webp</image:loc>
+      <image:title>Portfolio Irvan Afriandi - Web Developer Cirebon</image:title>
+      <image:caption>Preview portfolio resmi Irvan Afriandi di rikorizky.my.id</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Section: Beranda -->
+  <url>
+    <loc>https://rikorizky.my.id/#beranda</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Section: Biodata / Tentang Irvan Afriandi -->
+  <url>
+    <loc>https://rikorizky.my.id/#biodata</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Section: Pengalaman & Karir Riko -->
+  <url>
+    <loc>https://rikorizky.my.id/#experience</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Section: Proyek & Karya Irvan Afriandi -->
+  <url>
+    <loc>https://rikorizky.my.id/#project</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Section: Kontak Irvan Afriandi -->
+  <url>
+    <loc>https://rikorizky.my.id/#contact</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+</urlset>
