@@ -1,18 +1,61 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import gsap from 'gsap';
 
 export const SLIDE_DATA = [
-  { name: "BYD Cirebon", img: "/img/byd.webp", link: "https://bydcirebon.id/", category: "Automotive Dealer", description: "Website dealer dengan katalog kendaraan dan pengalaman showroom digital.", tags: ["React", "Vite", "Tailwind"] },
-  { name: "Mariposas Tour", img: "/img/mariposas.webp", link: "https://mariposasindonesia.com", category: "Travel & Tourism", description: "Platform perjalanan untuk menjelajahi destinasi Indonesia dengan lebih mudah.", tags: ["React", "GSAP", "Vercel"] },
-  { name: "SILADATA", img: "/img/siladata.webp", link: "https://siladata.my.id", category: "Data Management", description: "Sistem pengelolaan dokumen akreditasi yang terpusat dan terstruktur.", tags: ["Web App", "PHP", "MySQL"] },
-  { name: "Perpustakaan", img: "/img/perpus.webp", link: "https://perpustakaan.nue.dom.my.id/", category: "Library System", description: "Perpustakaan digital untuk menemukan dan mengelola koleksi buku secara online.", tags: ["Fullstack", "Database", "UI/UX"] },
-  { name: "Cafe Landing Page", img: "/img/landing.webp", link: "https://rikorizky.github.io/mycafe.github.io/", category: "Restaurant & Cafe", description: "Landing page hangat untuk memperkenalkan menu, suasana, dan identitas cafe.", tags: ["HTML5", "CSS3", "JavaScript"] },
-  { name: "Aplikasi Pembelian", img: "/img/tokoreact.webp", link: "https://penjualan-barang-sable.vercel.app/", category: "E-Commerce App", description: "Aplikasi pembelian dengan alur produk, keranjang, dan pengelolaan transaksi.", tags: ["React", "State Mgmt", "CSS Grid"] },
-  { name: "Happy Birthday", img: "/img/ultah.webp", link: "https://rikorizky.github.io/dibuka.github.oi/", category: "Interactive Web", description: "Pengalaman web interaktif untuk menyampaikan ucapan secara personal.", tags: ["Interactive", "CSS Animation"] },
-  { name: "Happy Birthday pt2", img: "/img/ultah2.webp", link: "https://rikorizky.github.io/hbd.github.io/", category: "Special Showcase", description: "Kartu ucapan digital dengan animasi, audio, dan elemen kejutan.", tags: ["Audio API", "Canvas", "JS"] },
-  { name: "SISTA BIJAK", img: "/img/sistabijak.webp", link: "https://sista-bijak.nue.dom.my.id", category: "Management System", description: "Sistem manajemen data untuk membantu proses administrasi yang lebih rapi.", tags: ["Laravel", "Bootstrap", "MySQL"] },
-  { name: "Todo List", img: "/img/todolist.webp", link: "https://todo-list.osk.dom.my.id", category: "Data Management", description: "Aplikasi produktivitas sederhana untuk mencatat dan menuntaskan tugas.", tags: ["Laravel", "Tailwind", "MySQL"] },
-  { name: "Trading", img: "/img/trading.webp", link: "https://trading2026-n3jr61ob9-rikorizkys-projects.vercel.app", category: "E-learning", description: "Platform belajar trading dengan materi terarah dan pengalaman interaktif.", tags: ["React", "Tailwind", "Supabase"] }
+  {
+    name: "BYD Cirebon",
+    img: "/img/byd.webp",
+    link: "https://bydcirebon.id/",
+    category: "Automotive Dealer",
+    description: "Website dealer dengan katalog kendaraan dan pengalaman showroom digital.",
+    tags: ["React", "Vite", "Tailwind"],
+    detail: {
+      fullDescription: "Website resmi dealer BYD Cirebon yang menampilkan katalog kendaraan listrik secara modern dan interaktif. Dirancang untuk memberikan pengalaman showroom digital yang imersif bagi calon pembeli, lengkap dengan tampilan produk, spesifikasi teknis, serta kemudahan menghubungi tim sales.",
+      highlights: [
+        "Katalog kendaraan interaktif dengan filter dan detail spesifikasi",
+        "Desain responsif & animasi halus untuk pengalaman premium",
+        "Integrasi formulir kontak dan WhatsApp langsung",
+        "Performa optimal dengan lazy loading & WebP image",
+      ],
+      images: ["/img/byd.webp"],
+    }
+  },
+  {
+    name: "Mariposas Tour",
+    img: "/img/mariposas.webp",
+    link: "https://mariposasindonesia.com",
+    category: "Travel & Tourism",
+    description: "Platform perjalanan untuk menjelajahi destinasi Indonesia dengan lebih mudah.",
+    tags: ["React", "GSAP", "Vercel"],
+    detail: {
+      fullDescription: "Mariposas Tour adalah platform digital untuk agen perjalanan wisata Indonesia. Menampilkan paket tur, destinasi populer, dan galeri foto wisata dengan animasi GSAP yang memukau. Dibangun di atas React + Vite dan di-deploy di Vercel untuk kecepatan loading yang optimal.",
+      highlights: [
+        "Halaman destinasi dengan animasi scroll parallax berbasis GSAP",
+        "Galeri foto perjalanan yang imersif dan mobile-friendly",
+        "Tampilan paket tur lengkap dengan harga dan jadwal",
+        "Deploy otomatis via Vercel dengan performa CDN global",
+      ],
+      images: ["/img/mariposas.webp"],
+    }
+  },
+  {
+    name: "SILADATA",
+    img: "/img/siladata.webp",
+    link: "https://siladata.my.id",
+    category: "Data Management",
+    description: "Sistem pengelolaan dokumen akreditasi yang terpusat dan terstruktur.",
+    tags: ["Web App", "PHP", "MySQL"],
+    detail: {
+      fullDescription: "SILADATA (Sistem Layanan Dokumen Akreditasi) adalah aplikasi web fullstack untuk manajemen dokumen akreditasi institusi pendidikan. Sistem ini telah mendapatkan pengakuan resmi berupa Hak Kekayaan Intelektual (HKI) dari Kementerian Hukum & HAM RI, membuktikan inovasi dan orisinalitasnya.",
+      highlights: [
+        "Manajemen dokumen akreditasi terpusat & terstruktur",
+        "Sistem autentikasi role-based (admin, operator, viewer)",
+        "Fitur upload, pencarian, dan export dokumen",
+        "Terdaftar resmi di HKI Kemenkumham RI (2026)",
+      ],
+      images: ["/img/siladata.webp"],
+    }
+  },
 ];
 
 const TOTAL = SLIDE_DATA.length;
@@ -28,6 +71,38 @@ export default function Karya() {
   const previewDivRef = useRef(null);
   const prevArrowRef = useRef(null);
   const nextArrowRef = useRef(null);
+  const modalRef = useRef(null);
+
+  const [modalProject, setModalProject] = useState(null);
+  const [galleryIdx, setGalleryIdx] = useState(0);
+
+  const openModal = useCallback((project) => {
+    setModalProject(project);
+    setGalleryIdx(0);
+    clearInterval(autoSlideInterval);
+    // Freeze background scroll WITHOUT jump: save current position and pin body
+    const scrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.overflow = 'hidden';
+    document.body.dataset.scrollY = scrollY;
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setModalProject(null);
+    // Restore background scroll position
+    const scrollY = parseInt(document.body.dataset.scrollY || '0', 10);
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.overflow = '';
+    delete document.body.dataset.scrollY;
+    window.scrollTo(0, scrollY);
+    startAutoSlide();
+  }, []);
 
   const getIndex = useCallback((offset) => {
     let newIdx = activeIdx + offset;
@@ -64,6 +139,7 @@ export default function Karya() {
   const createSlide = (content, className) => {
     const div = document.createElement('div');
     div.className = `karya-slide-container ${className}`;
+    div.dataset.projectName = content.name;
     const tagsHtml = content.tags ? content.tags.map(t => `<span class="karya-card-tag">${t}</span>`).join('') : '';
     const categoryHtml = content.category ? `<span class="karya-card-category">${content.category}</span>` : '';
 
@@ -75,9 +151,15 @@ export default function Karya() {
         <div class="karya-card-bottom-info">
           <p class="karya-card-description">${content.description || ''}</p>
           <div class="karya-card-tags">${tagsHtml}</div>
-          <div class="karya-card-link-badge">
-            <span>Kunjungi Project</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          <div class="karya-card-actions">
+            <button class="karya-card-detail-btn" data-project="${content.name}" aria-label="Lihat detail ${content.name}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <span>Lihat Detail</span>
+            </button>
+            <a class="karya-card-link-badge" href="${content.link}" target="_blank" rel="noopener noreferrer" aria-label="Kunjungi ${content.name}">
+              <span>Visit</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
           </div>
         </div>
       </div>
@@ -299,12 +381,28 @@ export default function Karya() {
     startAutoSlide();
 
     const handleClickSlide = (e) => {
+      // Detail button - opens modal
+      const detailBtn = e.target.closest('.karya-card-detail-btn');
+      if (detailBtn) {
+        e.stopPropagation();
+        const name = detailBtn.dataset.project;
+        const project = SLIDE_DATA.find(p => p.name === name);
+        if (project) openModal(project);
+        return;
+      }
+      // Visit link - let anchor handle naturally
+      if (e.target.closest('.karya-card-link-badge')) return;
+
       const slide = e.target.closest('.karya-slide-container');
       if (!slide || isAnimating) return;
       if (slide.classList.contains('next')) transition('next');
       else if (slide.classList.contains('prev')) transition('prev');
-      else if (slide.classList.contains('active')) redirectActiveSlide();
     };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') closeModal();
+    };
+
     const handlePrevArrow = () => transition('prev');
     const handleNextArrow = () => transition('next');
     let wasMobile = window.innerWidth <= 1024;
@@ -322,6 +420,7 @@ export default function Karya() {
     prevArrowNode?.addEventListener('click', handlePrevArrow);
     nextArrowNode?.addEventListener('click', handleNextArrow);
     window.addEventListener('resize', handleResize);
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       clearInterval(autoSlideInterval);
@@ -330,8 +429,9 @@ export default function Karya() {
       prevArrowNode?.removeEventListener('click', handlePrevArrow);
       nextArrowNode?.removeEventListener('click', handleNextArrow);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [getIndex]);
+  }, [getIndex, openModal, closeModal]);
 
   return (
     <>
@@ -560,7 +660,43 @@ export default function Karya() {
           border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* TOMBOL BADGE GLOSSY */
+        /* ACTIONS ROW */
+        .karya-card-actions {
+          grid-column: 1 / -1;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+        .karya-slide-container.prev .karya-card-actions,
+        .karya-slide-container.next .karya-card-actions {
+          display: none;
+        }
+
+        /* DETAIL BUTTON */
+        .karya-card-detail-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.35rem;
+          padding: 0.4rem 0.9rem;
+          border-radius: 7px;
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(10px);
+          color: #ffffff;
+          font-size: 0.7rem;
+          font-weight: 600;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          white-space: nowrap;
+          cursor: pointer;
+          transition: background 0.25s ease, transform 0.25s ease;
+          font-family: 'Manrope', sans-serif;
+        }
+        .karya-card-detail-btn:hover {
+          background: rgba(255, 255, 255, 0.28);
+          transform: translateY(-2px);
+        }
+
+        /* VISIT BADGE */
         .karya-card-link-badge {
           display: flex;
           align-items: center;
@@ -575,9 +711,10 @@ export default function Karya() {
           border: 1px solid rgba(255, 255, 255, 0.25);
           box-shadow: 0 6px 14px rgba(126, 44, 35, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.3);
           white-space: nowrap;
+          text-decoration: none;
           transition: transform 0.25s ease, background-color 0.25s ease;
         }
-        .karya-slide-container:hover .karya-card-link-badge {
+        .karya-card-link-badge:hover {
           background: rgba(185, 28, 28, 1);
           transform: translateY(-2px);
         }
@@ -901,6 +1038,412 @@ export default function Karya() {
         </button>
 
       </div>
+
+      {/* ===== PROJECT DETAIL MODAL ===== */}
+      {modalProject && (
+        <div
+          className="karya-modal-overlay"
+          onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Detail project ${modalProject.name}`}
+        >
+          <div ref={modalRef} className="karya-modal">
+            {/* Close button */}
+            <button
+              type="button"
+              className="karya-modal-close"
+              onClick={closeModal}
+              aria-label="Tutup modal"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+
+            {/* LEFT: Gallery panel */}
+            <div className="karya-modal-gallery">
+              <div className="karya-modal-img-wrap">
+                <img
+                  src={modalProject.detail.images[galleryIdx] ?? modalProject.img}
+                  alt={`${modalProject.name} - gambar ${galleryIdx + 1}`}
+                  className="karya-modal-img"
+                />
+                <div className="karya-modal-img-overlay" />
+                <span className="karya-modal-category-badge">{modalProject.category}</span>
+              </div>
+              {/* Gallery dots */}
+              {modalProject.detail.images.length > 1 && (
+                <div className="karya-modal-dots">
+                  {modalProject.detail.images.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`karya-modal-dot${i === galleryIdx ? ' active' : ''}`}
+                      onClick={() => setGalleryIdx(i)}
+                      aria-label={`Gambar ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+              {/* Gallery arrows */}
+              {modalProject.detail.images.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    className="karya-modal-gallery-arrow karya-modal-gallery-prev"
+                    onClick={() => setGalleryIdx(i => (i - 1 + modalProject.detail.images.length) % modalProject.detail.images.length)}
+                    aria-label="Gambar sebelumnya"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+                  </button>
+                  <button
+                    type="button"
+                    className="karya-modal-gallery-arrow karya-modal-gallery-next"
+                    onClick={() => setGalleryIdx(i => (i + 1) % modalProject.detail.images.length)}
+                    aria-label="Gambar berikutnya"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* RIGHT: Info panel */}
+            <div className="karya-modal-info">
+              <div className="karya-modal-info-top">
+                <div className="karya-modal-tags-row">
+                  {modalProject.tags.map(t => (
+                    <span key={t} className="karya-modal-tag">{t}</span>
+                  ))}
+                </div>
+                <h2 className="karya-modal-title">{modalProject.name}</h2>
+                <p className="karya-modal-desc">{modalProject.detail.fullDescription}</p>
+              </div>
+
+              <div className="karya-modal-highlights">
+                <h3 className="karya-modal-highlights-title">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Fitur Unggulan
+                </h3>
+                <ul className="karya-modal-highlights-list">
+                  {modalProject.detail.highlights.map((h, i) => (
+                    <li key={i} className="karya-modal-highlight-item">
+                      <span className="karya-modal-highlight-dot" />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="karya-modal-footer">
+                <a
+                  href={modalProject.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="karya-modal-visit-btn"
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  Kunjungi Website
+                </a>
+                <button type="button" className="karya-modal-close-btn" onClick={closeModal}>
+                  Tutup
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <style>{`
+            .karya-modal-overlay {
+              position: fixed;
+              inset: 0;
+              z-index: 9999;
+              background: rgba(0, 0, 0, 0.80);
+              backdrop-filter: blur(6px);
+              -webkit-backdrop-filter: blur(6px);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 1rem;
+              animation: karya-modal-fadein 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            @keyframes karya-modal-fadein {
+              from { opacity: 0; }
+              to   { opacity: 1; }
+            }
+            .karya-modal {
+              position: relative;
+              display: flex;
+              flex-direction: row;
+              width: 100%;
+              max-width: 960px;
+              max-height: 90vh;
+              background: #0d0d12;
+              border-radius: 20px;
+              overflow: hidden;
+              border: 1px solid rgba(255,255,255,0.1);
+              box-shadow: 0 40px 100px -20px rgba(0,0,0,0.9), 0 0 60px rgba(220,38,38,0.12);
+              animation: karya-modal-slidein 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            @keyframes karya-modal-slidein {
+              from { opacity: 0; transform: translateY(20px) scale(0.97); }
+              to   { opacity: 1; transform: translateY(0) scale(1); }
+            }
+            .karya-modal-close {
+              position: absolute;
+              top: 1rem;
+              right: 1rem;
+              z-index: 20;
+              width: 36px;
+              height: 36px;
+              border-radius: 50%;
+              background: rgba(255,255,255,0.1);
+              border: 1px solid rgba(255,255,255,0.15);
+              color: #fff;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: background 0.2s, transform 0.2s;
+              font-family: 'Manrope', sans-serif;
+            }
+            .karya-modal-close:hover {
+              background: rgba(220,38,38,0.7);
+              transform: scale(1.1);
+            }
+            /* GALLERY PANEL */
+            .karya-modal-gallery {
+              flex: 0 0 45%;
+              position: relative;
+              background: #080810;
+              overflow: hidden;
+            }
+            .karya-modal-img-wrap {
+              width: 100%;
+              height: 100%;
+              position: relative;
+            }
+            .karya-modal-img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              display: block;
+              transition: opacity 0.3s ease;
+            }
+            .karya-modal-img-overlay {
+              position: absolute;
+              inset: 0;
+              background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 50%);
+              pointer-events: none;
+            }
+            .karya-modal-category-badge {
+              position: absolute;
+              top: 1.1rem;
+              left: 1.1rem;
+              padding: 0.3rem 0.85rem;
+              border-radius: 20px;
+              background: rgba(0,0,0,0.55);
+              backdrop-filter: blur(10px);
+              border: 1px solid rgba(255,255,255,0.18);
+              font-size: 0.68rem;
+              font-weight: 600;
+              letter-spacing: 0.06em;
+              color: #fee2e2;
+              font-family: 'Manrope', sans-serif;
+            }
+            .karya-modal-dots {
+              position: absolute;
+              bottom: 1rem;
+              left: 50%;
+              transform: translateX(-50%);
+              display: flex;
+              gap: 0.45rem;
+            }
+            .karya-modal-dot {
+              width: 7px;
+              height: 7px;
+              border-radius: 50%;
+              background: rgba(255,255,255,0.35);
+              border: none;
+              cursor: pointer;
+              transition: background 0.2s, transform 0.2s;
+              padding: 0;
+            }
+            .karya-modal-dot.active {
+              background: #f87171;
+              transform: scale(1.3);
+            }
+            .karya-modal-gallery-arrow {
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 36px;
+              height: 36px;
+              border-radius: 50%;
+              background: rgba(255,255,255,0.12);
+              backdrop-filter: blur(8px);
+              border: 1px solid rgba(255,255,255,0.2);
+              color: #fff;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: background 0.2s;
+            }
+            .karya-modal-gallery-arrow:hover { background: rgba(220,38,38,0.6); }
+            .karya-modal-gallery-prev { left: 0.75rem; }
+            .karya-modal-gallery-next { right: 0.75rem; }
+            /* INFO PANEL */
+            .karya-modal-info {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              padding: 2.2rem 2rem 1.8rem;
+              overflow-y: auto;
+              scrollbar-width: thin;
+              scrollbar-color: rgba(220,38,38,0.35) transparent;
+              font-family: 'Manrope', sans-serif;
+            }
+            .karya-modal-info-top { margin-bottom: 1.5rem; }
+            .karya-modal-tags-row {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 0.4rem;
+              margin-bottom: 0.9rem;
+            }
+            .karya-modal-tag {
+              font-size: 0.65rem;
+              font-weight: 600;
+              letter-spacing: 0.06em;
+              padding: 0.22rem 0.7rem;
+              border-radius: 20px;
+              border: 1px solid rgba(220,38,38,0.4);
+              background: rgba(220,38,38,0.12);
+              color: #fca5a5;
+            }
+            .karya-modal-title {
+              margin: 0 0 0.8rem;
+              font-size: clamp(1.5rem, 3vw, 2.1rem);
+              font-weight: 800;
+              letter-spacing: -0.02em;
+              line-height: 1.15;
+              color: #ffffff;
+            }
+            .karya-modal-desc {
+              margin: 0;
+              font-size: 0.9rem;
+              line-height: 1.65;
+              color: rgba(255,255,255,0.65);
+            }
+            /* HIGHLIGHTS */
+            .karya-modal-highlights {
+              background: rgba(255,255,255,0.04);
+              border: 1px solid rgba(255,255,255,0.08);
+              border-radius: 12px;
+              padding: 1.1rem 1.2rem;
+              margin-bottom: 1.5rem;
+            }
+            .karya-modal-highlights-title {
+              margin: 0 0 0.75rem;
+              font-size: 0.75rem;
+              font-weight: 700;
+              letter-spacing: 0.1em;
+              text-transform: uppercase;
+              color: #f87171;
+              display: flex;
+              align-items: center;
+              gap: 0.45rem;
+            }
+            .karya-modal-highlights-list {
+              list-style: none;
+              margin: 0;
+              padding: 0;
+              display: flex;
+              flex-direction: column;
+              gap: 0.55rem;
+            }
+            .karya-modal-highlight-item {
+              font-size: 0.85rem;
+              color: rgba(255,255,255,0.75);
+              line-height: 1.45;
+              display: flex;
+              align-items: flex-start;
+              gap: 0.6rem;
+            }
+            .karya-modal-highlight-dot {
+              flex-shrink: 0;
+              margin-top: 0.45rem;
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+              background: #ef4444;
+            }
+            /* FOOTER */
+            .karya-modal-footer {
+              display: flex;
+              gap: 0.75rem;
+              align-items: center;
+              flex-wrap: wrap;
+            }
+            .karya-modal-visit-btn {
+              display: inline-flex;
+              align-items: center;
+              gap: 0.55rem;
+              padding: 0.65rem 1.3rem;
+              border-radius: 10px;
+              background: linear-gradient(135deg, #dc2626, #b91c1c);
+              color: #fff;
+              font-size: 0.85rem;
+              font-weight: 700;
+              text-decoration: none;
+              border: none;
+              cursor: pointer;
+              box-shadow: 0 8px 20px rgba(220,38,38,0.35);
+              transition: transform 0.2s, box-shadow 0.2s;
+              font-family: 'Manrope', sans-serif;
+            }
+            .karya-modal-visit-btn:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 12px 28px rgba(220,38,38,0.5);
+            }
+            .karya-modal-close-btn {
+              padding: 0.65rem 1.2rem;
+              border-radius: 10px;
+              background: rgba(255,255,255,0.07);
+              border: 1px solid rgba(255,255,255,0.15);
+              color: rgba(255,255,255,0.65);
+              font-size: 0.85rem;
+              font-weight: 600;
+              cursor: pointer;
+              transition: background 0.2s, color 0.2s;
+              font-family: 'Manrope', sans-serif;
+            }
+            .karya-modal-close-btn:hover {
+              background: rgba(255,255,255,0.12);
+              color: #fff;
+            }
+            /* RESPONSIVE */
+            @media (max-width: 640px) {
+              .karya-modal {
+                flex-direction: column;
+                max-height: 95vh;
+              }
+              .karya-modal-gallery {
+                flex: 0 0 240px;
+                min-height: 240px;
+              }
+              .karya-modal-info {
+                padding: 1.4rem 1.2rem 1.2rem;
+              }
+              .karya-modal-title {
+                font-size: 1.4rem;
+              }
+            }
+          `}</style>
+        </div>
+      )}
     </>
   );
 }

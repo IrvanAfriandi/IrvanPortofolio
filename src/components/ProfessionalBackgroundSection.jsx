@@ -35,7 +35,7 @@ const getGoogleDriveThumbnail = (url) => {
 
 // ============ DATA ============
 export const rawExperiences = [
-    // ── Tier 1: Lisensi & Sertifikasi Resmi Pemerintah ──
+    // ── Lisensi & Sertifikasi Resmi ──
     {
         id: 0,
         title: 'Sertifikat HKI',
@@ -72,142 +72,6 @@ export const rawExperiences = [
         description: 'Uji kompetensi teknis Rekayasa Perangkat Lunak dalam pengembangan aplikasi web & analisis sistem.',
         year: '2024',
         certificate: 'https://drive.google.com/file/d/1XY4nEWlOES9m9tWEgYsDiRC1YbGAQbeO/view',
-    },
-    {
-        id: 3,
-        title: 'Sertifikat PKL',
-        role: 'Badan Pusat Statistik Kota Cirebon',
-        issuer: 'BPS Kota Cirebon',
-        category: 'Pengalaman Kerja',
-        icon: 'fa-building-columns',
-        tags: ['Pengolahan Data', 'Digitalisasi Instansi'],
-        description: 'Praktik kerja lapangan di instansi pemerintah, mengelola & menganalisis data statistik kependudukan.',
-        year: '2024',
-        certificate: 'https://drive.google.com/file/d/1y3VN-N-0SqDUHNsEDsHt1PVmCTZDOTvk/view',
-    },
-    // ── Tier 2: Sertifikasi Teknologi Profesional ──
-    {
-        id: 'cert-new-4',
-        title: 'Sertifikat Oracle Academy',
-        role: 'For Satisfactory Completion of All Coursework',
-        issuer: 'Oracle Academy',
-        category: 'Sertifikasi',
-        icon: 'fa-award',
-        tags: ['Java', 'Pemrograman Berorientasi Objek'],
-        description: 'Sertifikat kelulusan dan penyelesaian program For Satisfactory Completion of All Coursework.',
-        year: '2026',
-        certificate: 'https://drive.google.com/file/d/1xG4ZQwUDS6XOqpd0TXyYaTtqQLetmdVo/view?usp=sharing',
-    },
-    {
-        id: 1,
-        title: 'Sertifikat Oracle Academy',
-        role: 'Java Fundementals',
-        issuer: 'Oracle Academy',
-        category: 'Java Fundementals',
-        icon: 'fa-user-tie',
-        tags: ['Java', 'Pemrograman Berorientasi Objek'],
-        description: 'Penguasaan dasar pemrograman Java, struktur kontrol, dan konsep OOP dasar untuk pembuatan aplikasi sederhana.',
-        year: '2026',
-        certificate: 'https://drive.google.com/file/d/12aGyNGVBcDi-tmMzTKTOAckF4JDRNhFZ/view?usp=sharing',
-    },
-    // ── Tier 3: Pelatihan & Kursus Online ──
-    {
-        id: 'cert-js',
-        title: 'Sertifikat Dicoding',
-        role: 'Belajar Dasar Pemrograman JavaScript',
-        issuer: 'Dicoding',
-        category: 'Belajar Dasar Pemrograman JavaScript',
-        icon: 'fa-js',
-        tags: ['JavaScript', 'Pemrograman Web', 'Dasar Coding'],
-        description: 'Sertifikat kelulusan Sertifikat Kompetensi Kelulusan kelas Belajar Dasar Pemrograman JavaScript dari Dicoding Academy.',
-        year: '2026',
-        certificate: 'https://drive.google.com/file/d/1hg0A45EwjA7j1GAH9M84KCQJyhRZAqPe/view?usp=sharing',
-    },
-    {
-        id: 'cert-frontend',
-        title: 'Sertifikat Dicoding',
-        role: 'Belajar Membuat Front-End Web untuk Pemula',
-        issuer: 'Dicoding',
-        category: 'Belajar Membuat Front-End Web untuk Pemula',
-        icon: 'fa-display',
-        tags: ['HTML', 'CSS', 'JavaScript', 'Front-End'],
-        description: 'Sertifikat kelulusan Sertifikat Kompetensi Kelulusan kelas Belajar Membuat Front-End Web untuk Pemula dari Dicoding Academy.',
-        year: '2026',
-        certificate: 'https://drive.google.com/file/d/1sT6WQ4zXFCuxNt1GqkRPEXSwG2liCY-2/view?usp=sharing',
-    },
-    {
-        id: 'cert-new-2',
-        title: 'Sertifikat Dicoding',
-        role: 'Belajar Dasar Pemrograman Web',
-        issuer: 'Dicoding',
-        category: 'Belajar Dasar Pemrograman Web',
-        icon: 'fa-certificate',
-        tags: ['HTML', 'CSS', 'JavaScript'],
-        description: 'Sertifikat penyelesaian pelatihan Belajar Dasar Pemrograman Web.',
-        year: '2026',
-        certificate: 'https://drive.google.com/file/d/1ppwkXqvlRJ67rl_vPV0lh1tSZpUzZ-GO/view?usp=sharing',
-    },
-    {
-        id: 'cert-new-1',
-        title: 'Sertifikat Dicoding',
-        role: 'Introduction to Financial Literacy',
-        issuer: 'Dicoding',
-        category: 'Introduction to Financial Literacy',
-        icon: 'fa-certificate',
-        tags: ['Literasi Keuangan', 'Finansial'],
-        description: 'Sertifikat penyelesaian pelatihan Introduction to Financial Literacy.',
-        year: '2026',
-        certificate: 'https://drive.google.com/file/d/1I5pkz1SOur4efirMGvld2OLaWMSf_e1n/view?usp=share_link',
-    },
-    {
-        id: 'cert-selfdev',
-        title: 'Sertifikat Dicoding',
-        role: 'Belajar Strategi Pengembangan Diri',
-        issuer: 'Dicoding',
-        category: 'Belajar Strategi Pengembangan Diri',
-        icon: 'fa-brain',
-        tags: ['Pengembangan Diri', 'Soft Skills', 'Growth Mindset'],
-        description: 'Sertifikat kelulusan Sertifikat Kompetensi Kelulusan kelas Belajar Strategi Pengembangan Diri dari Dicoding Academy.',
-        year: '2026',
-        certificate: 'https://drive.google.com/file/d/1Wxg8xqGn8P2izfZuyzia96MF80ZtX0J3/view?usp=sharing',
-    },
-    // ── Tier 4: Pelatihan Soft Skills & Pengembangan Karier ──
-    {
-        id: 5,
-        title: 'Sertifikat Karier.mu',
-        role: 'Menjadi Talenta Siap Bisnis',
-        issuer: 'Karier.mu Platform',
-        category: 'Pelatihan Professional',
-        icon: 'fa-briefcase',
-        tags: ['Kesiapan Kerja', 'Soft Skills', 'Wirausaha'],
-        description: 'Pelatihan pengembangan soft skills, kepemimpinan, dan komunikasi efektif persiapan kerja & bisnis.',
-        year: '2024',
-        certificate: 'https://drive.google.com/file/d/1hc3UhB86SjkcyUJMYuN7oXKLtHxiYmWF/view',
-    },
-    {
-        id: 'cert-new-5',
-        title: 'Sertifikat Sekolah.mu',
-        role: 'Kelas Persiapan Kerja',
-        issuer: 'Sekolah.mu / Karier.mu',
-        category: 'Kelas Persiapan Kerja',
-        icon: 'fa-briefcase',
-        tags: ['Teknik Presentasi', 'Komunikasi Efektif', 'Kesiapan Kerja'],
-        description: 'Sertifikat penyelesaian program pelatihan Kelas Persiapan Kerja.',
-        year: '2024',
-        certificate: 'https://drive.google.com/file/d/1WzoQ1v3kiRnrtr1sMtMU70NYpPksqGy2/view?usp=sharing',
-    },
-    // ── Tier 5: Partisipasi & Kunjungan ──
-    {
-        id: 6,
-        title: 'Sertifikat Partisipasi',
-        role: 'Kunjungan Industri GAMELAB',
-        issuer: 'GAMELAB Indonesia',
-        category: 'Kunjungan Industri',
-        icon: 'fa-gamepad',
-        tags: ['Game Development', 'Industri Kreatif'],
-        description: 'Wawasan pengembangan game profesional dan industri teknologi kreatif di GAMELAB Indonesia.',
-        year: '2023',
-        certificate: 'https://drive.google.com/file/d/1hdLfWs4pNjjCx3a6fEe50F0vT1R_DTYT/view',
     },
 ];
 
@@ -556,7 +420,7 @@ export default function RelatedExperience() {
                         centerInsufficientSlides={true}
                         slidesPerView={'auto'}
                         initialSlide={0}
-                        loop={true}
+                        loop={experiences.length > 3}
                         spaceBetween={18}
                         speed={500}
                         pagination={{

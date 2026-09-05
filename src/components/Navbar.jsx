@@ -355,7 +355,7 @@ export default function Navbar() {
           <div className="nav-left">
             <a href="#beranda" className="nav-brand" onClick={handleNavClick}>
               {/* <img
-                src="/img/profil.jpeg"
+                src="/img/profil.webp"
                 alt="Irvan Afriandi"
                 className="brand-mark"
                 onError={(e) => {

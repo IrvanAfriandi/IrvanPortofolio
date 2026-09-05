@@ -66,7 +66,7 @@ const LandingPage = () => {
       >
         <div className="text-white z-10 w-full max-w-3xl text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-5 animate-fade-in tracking-tight !text-center">
-            Irvan Afriandia
+            Irvan Afriandi
           </h1>
           <p className="text-base sm:text-lg md:text-2xl mb-6 sm:mb-8 animate-fade-in-up text-neutral-200 font-light leading-relaxed px-2">
             Build new, Improve existing.

@@ -8,7 +8,7 @@ import './AboutSection.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PROFILE_PHOTO = '/img/profil.jpeg';
+const PROFILE_PHOTO = '/img/profil.webp';
 
 const SKILL_CATEGORIES = [
   {
