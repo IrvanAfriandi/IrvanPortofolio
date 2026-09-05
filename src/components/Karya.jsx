@@ -101,6 +101,7 @@ export default function Karya() {
   const [modalProject, setModalProject] = useState(null);
   const [galleryIdx, setGalleryIdx] = useState(0);
   const [photoLightbox, setPhotoLightbox] = useState(null); // { src, caption, index }
+  const [activeSlideIdx, setActiveSlideIdx] = useState(0);
 
   const openModal = useCallback((project) => {
     setModalProject(project);
@@ -171,7 +172,7 @@ export default function Karya() {
     titleAnimationTimer = null;
   };
 
-  const animateTitleToCaption = () => {};
+  const animateTitleToCaption = () => { };
 
   const updatePreview = (content) => {
     if (!previewDivRef.current) return;
@@ -222,6 +223,10 @@ export default function Karya() {
     return div;
   };
 
+  const CARD_TOP = '53%';
+  const CARD_WIDTH = 'min(46%, 720px)';
+  const CARD_HEIGHT = 'clamp(460px, 52svh, 490px)';
+
   const transitionDesktop = (direction) => {
     if (isAnimating) return;
     isAnimating = true;
@@ -238,14 +243,14 @@ export default function Karya() {
       inSlide = createSlide(SLIDE_DATA[inIdx - 1], inPos);
       sliderRef.current.appendChild(inSlide);
       const startLeft = (inPos === 'prev') ? '10%' : '90%';
-      gsap.set(inSlide, { top: '50%', left: startLeft, width: '46%', height: '56%', scale: 0.52, rotateY: 0, z: 0, opacity: 1, filter: "brightness(0.8)", zIndex: 10, clipPath: 'none' });
+      gsap.set(inSlide, { top: CARD_TOP, left: startLeft, width: CARD_WIDTH, height: CARD_HEIGHT, scale: 0.52, rotateY: 0, z: 0, opacity: 1, filter: "brightness(0.8)", zIndex: 10, clipPath: 'none' });
     }
     if (!outSlide) {
       const outIdx = getIndex(direction === 'next' ? -1 : 1);
       outSlide = createSlide(SLIDE_DATA[outIdx - 1], outPos);
       sliderRef.current.appendChild(outSlide);
       const startLeft = (outPos === 'prev') ? '10%' : '90%';
-      gsap.set(outSlide, { top: '50%', left: startLeft, width: '46%', height: '56%', scale: 0.52, rotateY: 0, z: 0, opacity: 1, filter: "brightness(0.8)", zIndex: 10, clipPath: 'none' });
+      gsap.set(outSlide, { top: CARD_TOP, left: startLeft, width: CARD_WIDTH, height: CARD_HEIGHT, scale: 0.52, rotateY: 0, z: 0, opacity: 1, filter: "brightness(0.8)", zIndex: 10, clipPath: 'none' });
     }
 
     const animDuration = 0.85;
@@ -255,19 +260,19 @@ export default function Karya() {
 
     // Move the side preview into the center while shrinking the old center card.
     gsap.set(inSlide, {
-      top: '50%',
+      top: CARD_TOP,
       left: incomingLeft,
-      width: '46%',
-      height: '56%',
+      width: CARD_WIDTH,
+      height: CARD_HEIGHT,
       scale: 0.52,
       opacity: 0.85,
       zIndex: 20
     });
     gsap.to(inSlide, {
       left: '50%',
-      top: '56%',
-      width: '46%',
-      height: '56%',
+      top: CARD_TOP,
+      width: CARD_WIDTH,
+      height: CARD_HEIGHT,
       scale: 1,
       opacity: 1,
       filter: "brightness(1)",
@@ -284,7 +289,7 @@ export default function Karya() {
 
     // Return the old center card to the side preview position.
     gsap.to(activeSlide, {
-      top: '50%',
+      top: CARD_TOP,
       left: outgoingLeft,
       scale: 0.52,
       opacity: 0.85,
@@ -306,10 +311,10 @@ export default function Karya() {
     sliderRef.current.appendChild(newSlide);
     const newStartLeft = (inPos === 'prev') ? '10%' : '90%';
     gsap.set(newSlide, {
-      top: '50%',
+      top: CARD_TOP,
       left: newStartLeft,
-      width: '46%',
-      height: '56%',
+      width: CARD_WIDTH,
+      height: CARD_HEIGHT,
       scale: 0.52,
       opacity: 0,
       filter: "brightness(0.8)",
@@ -327,10 +332,11 @@ export default function Karya() {
       activeSlide.className = `karya-slide-container ${outPos}`;
       inSlide.className = 'karya-slide-container active';
       newSlide.className = `karya-slide-container ${inPos}`;
-        gsap.set('.karya-slide-container.prev', { top: '50%', left: '10%', width: '46%', height: '56%', scale: 0.52, rotateY: 0, rotation: 0, skewX: 0, skewY: 0, z: 0, opacity: 0.85, filter: "brightness(0.8)", zIndex: 10, clipPath: 'none' });
-        gsap.set('.karya-slide-container.active', { top: '56%', left: '50%', width: '46%', height: '56%', scale: 1, rotateY: 0, rotation: 0, skewX: 0, skewY: 0, z: 0, opacity: 1, filter: "brightness(1)", zIndex: 20, clipPath: 'none' });
-        gsap.set('.karya-slide-container.next', { top: '50%', left: '90%', width: '46%', height: '56%', scale: 0.52, rotateY: 0, rotation: 0, skewX: 0, skewY: 0, z: 0, opacity: 0.85, filter: "brightness(0.8)", zIndex: 10, clipPath: 'none' });
+      gsap.set('.karya-slide-container.prev', { top: CARD_TOP, left: '10%', width: CARD_WIDTH, height: CARD_HEIGHT, scale: 0.52, rotateY: 0, rotation: 0, skewX: 0, skewY: 0, z: 0, opacity: 0.85, filter: "brightness(0.8)", zIndex: 10, clipPath: 'none' });
+      gsap.set('.karya-slide-container.active', { top: CARD_TOP, left: '50%', width: CARD_WIDTH, height: CARD_HEIGHT, scale: 1, rotateY: 0, rotation: 0, skewX: 0, skewY: 0, z: 0, opacity: 1, filter: "brightness(1)", zIndex: 20, clipPath: 'none' });
+      gsap.set('.karya-slide-container.next', { top: CARD_TOP, left: '90%', width: CARD_WIDTH, height: CARD_HEIGHT, scale: 0.52, rotateY: 0, rotation: 0, skewX: 0, skewY: 0, z: 0, opacity: 0.85, filter: "brightness(0.8)", zIndex: 10, clipPath: 'none' });
       activeIdx = inIdx;
+      setActiveSlideIdx(inIdx - 1);
       isAnimating = false;
       animateTitleToCaption(SLIDE_DATA[activeIdx - 1].name);
       updatePreview(SLIDE_DATA[activeIdx - 1]);
@@ -347,20 +353,22 @@ export default function Karya() {
       isAnimating = false;
       return;
     }
+    const innerCard = activeSlide.querySelector('.karya-slide-img');
     const imgElement = activeSlide.querySelector('.karya-slide-img img');
-    if (!imgElement) {
+    if (!innerCard || !imgElement) {
       isAnimating = false;
       return;
     }
     const tl = gsap.timeline({
       onComplete: () => {
         activeIdx = newIdx;
+        setActiveSlideIdx(newIdx - 1);
         isAnimating = false;
         updatePreview(newContent);
         animateTitleToCaption(newContent.name);
       }
     });
-    tl.to(activeSlide, { opacity: 0.25, scale: 0.97, duration: 0.2, ease: "power2.in" })
+    tl.to(innerCard, { opacity: 0.25, scale: 0.96, duration: 0.2, ease: "power2.in" })
       .call(() => {
         imgElement.src = newContent.img;
         imgElement.alt = newContent.name;
@@ -384,7 +392,7 @@ export default function Karya() {
         }
         activeSlide.dataset.projectName = newContent.name;
       })
-      .to(activeSlide, { opacity: 1, scale: 1, duration: 0.25, ease: "power2.out" });
+      .to(innerCard, { opacity: 1, scale: 1, duration: 0.25, ease: "power2.out" });
   };
 
   const transition = (direction) => {
@@ -427,14 +435,15 @@ export default function Karya() {
       const activeSlide = createSlide(SLIDE_DATA[activeIdx - 1], 'active');
       const nextSlide = createSlide(SLIDE_DATA[nextIdx - 1], 'next');
       sliderRef.current.append(prevSlide, activeSlide, nextSlide);
-      gsap.set('.karya-slide-container.prev', { left: '10%', width: '46%', height: '56%', scale: 0.52, rotateY: 0, z: 0, opacity: 0.85, zIndex: 10, clipPath: 'none' });
-      gsap.set('.karya-slide-container.active', { left: '50%', width: '46%', height: '56%', scale: 1, rotateY: 0, z: 0, opacity: 1, zIndex: 20, clipPath: 'none' });
-      gsap.set('.karya-slide-container.next', { left: '90%', width: '46%', height: '56%', scale: 0.52, rotateY: 0, z: 0, opacity: 0.85, zIndex: 10, clipPath: 'none' });
+      gsap.set('.karya-slide-container.prev', { top: CARD_TOP, left: '10%', width: CARD_WIDTH, height: CARD_HEIGHT, scale: 0.52, rotateY: 0, z: 0, opacity: 0.85, zIndex: 10, clipPath: 'none' });
+      gsap.set('.karya-slide-container.active', { top: CARD_TOP, left: '50%', width: CARD_WIDTH, height: CARD_HEIGHT, scale: 1, rotateY: 0, z: 0, opacity: 1, zIndex: 20, clipPath: 'none' });
+      gsap.set('.karya-slide-container.next', { top: CARD_TOP, left: '90%', width: CARD_WIDTH, height: CARD_HEIGHT, scale: 0.52, rotateY: 0, z: 0, opacity: 0.85, zIndex: 10, clipPath: 'none' });
     } else {
       const activeSlide = createSlide(SLIDE_DATA[activeIdx - 1], 'active');
       sliderRef.current.appendChild(activeSlide);
-      gsap.set('.karya-slide-container.active', { left: '50%', scale: 1, clipPath: 'none' });
+      gsap.set('.karya-slide-container.active', { top: '53%', left: '50%', scale: 1, clipPath: 'none' });
     }
+    setActiveSlideIdx(activeIdx - 1);
 
     if (titleDivRef.current) {
       const h1 = titleDivRef.current.querySelector('h1');
@@ -533,8 +542,8 @@ export default function Karya() {
           position: relative;
           width: 100%;
           max-width: 100%;
-          min-height: 680px;
-          height: 100svh;
+          min-height: 660px;
+          height: clamp(660px, 82svh, 780px);
           overflow: hidden;
           background: #f7f4ee;
           font-family: 'Manrope', sans-serif;
@@ -545,7 +554,7 @@ export default function Karya() {
 
         .karya-header-badge {
           position: absolute;
-          top: clamp(2rem, 7vh, 4.5rem);
+          top: clamp(1rem, 2.4vh, 1.6rem);
           left: clamp(1.5rem, 6vw, 6rem);
           transform: none;
           z-index: 25;
@@ -567,7 +576,7 @@ export default function Karya() {
         }
         .karya-section-heading {
           position: absolute;
-          top: clamp(4rem, 9vh, 6rem);
+          top: clamp(0.9rem, 2.2vh, 1.5rem);
           left: 50%;
           transform: translateX(-50%);
           z-index: 25;
@@ -579,13 +588,13 @@ export default function Karya() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 1rem;
-          margin-bottom: 0.75rem;
+          gap: 0.75rem;
+          margin-bottom: 0.3rem;
           color: rgba(220, 38, 38, 0.85);
-          font-size: 0.68rem;
+          font-size: 0.65rem;
           font-weight: 700;
           font-family: monospace;
-          letter-spacing: 0.35em;
+          letter-spacing: 0.3em;
           text-transform: uppercase;
         }
         .karya-section-heading span::before,
@@ -601,7 +610,7 @@ export default function Karya() {
         .karya-section-heading h2 {
           margin: 0;
           color: #1d252c;
-          font-size: clamp(2rem, 5vw, 3.25rem);
+          font-size: clamp(1.85rem, 4vw, 2.8rem);
           font-weight: 800;
           letter-spacing: -0.02em;
           line-height: 1.1;
@@ -614,9 +623,9 @@ export default function Karya() {
         /* EFEK GLOSSY UTAMA KARTU */
         .karya-slide-container {
           position: absolute;
-          width: 46%;
-          height: 56%;
-          top: 50%;
+          width: min(46%, 720px);
+          height: clamp(460px, 52svh, 490px);
+          top: 53%;
           left: 50%;
           transform: translate(-50%, -50%);
           background: #dedbd5;
@@ -828,7 +837,7 @@ export default function Karya() {
           left: 50%;
           width: 46%;
           height: 56%;
-          top: 56%;
+          top: 48%;
           transform: translate(-50%, -50%) scale(1);
           opacity: 1;
           filter: brightness(1);
@@ -979,42 +988,93 @@ export default function Karya() {
           color: #ffb07c;
         }
 
-        .karya-nav-arrow {
+        /* BOTTOM CONTROLS PILL BAR */
+        .karya-bottom-controls {
           position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 52px;
-          height: 52px;
-          background: rgba(255, 255, 255, 0.78);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border-radius: 12px;
+          bottom: clamp(1.25rem, 3vh, 2rem);
+          top: auto;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 35;
+          display: flex;
+          align-items: center;
+          gap: 0.85rem;
+          padding: 0.35rem 0.55rem;
+          background: rgba(255, 255, 255, 0.84);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-radius: 40px;
+          border: 1px solid rgba(61, 52, 42, 0.14);
+          box-shadow: 
+            0 12px 32px -4px rgba(83, 64, 40, 0.18),
+            0 2px 8px rgba(0, 0, 0, 0.04),
+            inset 0 1px 1px rgba(255, 255, 255, 0.7);
+        }
+
+        .karya-nav-arrow {
+          position: relative;
+          top: auto;
+          left: auto;
+          right: auto;
+          transform: none;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.92);
+          border: 1px solid rgba(61, 52, 42, 0.12);
           display: flex;
           align-items: center;
           justify-content: center;
           color: #3d342a;
           cursor: pointer;
-          z-index: 40;
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-          border: 1px solid rgba(61, 52, 42, 0.16);
-          box-shadow: 0 8px 20px rgba(83, 64, 40, 0.12);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 3px 10px rgba(83, 64, 40, 0.08);
           padding: 0;
           appearance: none;
           -webkit-tap-highlight-color: transparent;
         }
         .karya-nav-arrow:focus-visible {
           outline: 3px solid #ffb07c;
-          outline-offset: 4px;
+          outline-offset: 3px;
         }
         .karya-nav-arrow:hover {
-          background: #c83d32;
-          border-color: rgba(255, 255, 255, 0.4);
+          background: linear-gradient(135deg, #dc2626, #b91c1c);
+          border-color: rgba(220, 38, 38, 0.5);
           color: #ffffff;
-          transform: translateY(-50%) scale(1.1);
-          box-shadow: 0 8px 20px rgba(126, 44, 35, 0.2);
+          transform: scale(1.08);
+          box-shadow: 0 6px 16px rgba(220, 38, 38, 0.35);
         }
-        .karya-prev-arrow { left: clamp(1rem, 3vw, 3rem); }
-        .karya-next-arrow { right: clamp(1rem, 3vw, 3rem); }
+        .karya-nav-arrow:active {
+          transform: scale(0.94);
+        }
+
+        .karya-control-dots {
+          display: flex;
+          align-items: center;
+          gap: 0.45rem;
+          padding: 0 0.35rem;
+        }
+        .karya-control-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: rgba(61, 52, 42, 0.25);
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .karya-control-dot:hover {
+          background: rgba(220, 38, 38, 0.6);
+          transform: scale(1.2);
+        }
+        .karya-control-dot.active {
+          width: 22px;
+          height: 8px;
+          border-radius: 6px;
+          background: linear-gradient(90deg, #dc2626, #ef4444);
+          box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+        }
 
         .karya-footer {
           position: absolute;
@@ -1037,19 +1097,28 @@ export default function Karya() {
         /* MEDIA QUERY UNTUK MOBILE & TABLET (LEBAR ≤ 1024px) */
         @media (max-width: 1024px) {
           .karya-slider {
-            min-height: 620px;
-            height: 100svh;
+            min-height: 580px;
+            height: clamp(580px, 80svh, 660px);
           }
           .karya-header-badge {
-            top: 1.5rem;
+            top: 0.85rem;
             left: 1rem;
             font-size: 0.65rem;
             padding: 0.2rem 0 0.2rem 0.65rem;
           }
+          .karya-section-heading {
+            top: 0.85rem;
+          }
+          .karya-section-heading h2 {
+            font-size: clamp(1.6rem, 6vw, 2.2rem);
+          }
+          .karya-section-heading span {
+            margin-bottom: 0.25rem;
+            font-size: 0.62rem;
+          }
           .karya-slide-container {
-            width: min(84%, 430px);
-            height: min(62%, 540px);
-            border-radius: 18px;
+            width: min(88%, 420px);
+            border-radius: 16px;
           }
           .karya-slide-container.prev,
           .karya-slide-container.next {
@@ -1057,9 +1126,9 @@ export default function Karya() {
           }
           .karya-slide-container.active {
             left: 50%;
-            width: min(90%, 640px);
-            height: min(52%, 390px);
-            top: 58%;
+            width: min(90%, 420px);
+            height: min(63%, 395px);
+            top: 53%;
             transform: translate(-50%, -50%) scale(1);
             display: block;
           }
@@ -1071,33 +1140,26 @@ export default function Karya() {
             left: 1rem;
             width: calc(100% - 2rem);
           }
-          .karya-section-heading {
-            top: 4.5rem;
+          .karya-bottom-controls {
+            bottom: clamp(0.75rem, 2vh, 1.25rem);
+            top: auto;
+            gap: 0.7rem;
+            padding: 0.3rem 0.45rem;
           }
           .karya-nav-arrow {
-            width: 46px;
-            height: 46px;
-            border-radius: 10px;
+            width: 36px;
+            height: 36px;
           }
-          .karya-prev-arrow { left: 1rem; }
-          .karya-next-arrow { right: 1rem; }
           .karya-slider-preview {
             display: none;
           }
           .karya-slide-caption {
-            bottom: 1.5rem;
-            left: 1rem;
-            font-size: 0.75rem;
-            padding: 0.35rem 0.9rem;
-            max-width: 60%;
+            display: none;
           }
           .karya-card-description {
             font-size: 0.78rem;
           }
           .karya-footer {
-            right: 1rem;
-            bottom: 1.5rem;
-            font-size: 0.65rem;
             display: none;
           }
         }
@@ -1118,17 +1180,35 @@ export default function Karya() {
         <div className="karya-ambient-glow"></div>
         <div ref={captionDivRef} className="karya-slide-caption"></div>
 
-        <button type="button" ref={prevArrowRef} className="karya-nav-arrow karya-prev-arrow" aria-label="Previous Slide">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-        </button>
+        <div className="karya-bottom-controls">
+          <button type="button" ref={prevArrowRef} className="karya-nav-arrow karya-prev-arrow" aria-label="Previous Slide">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-        <button type="button" ref={nextArrowRef} className="karya-nav-arrow karya-next-arrow" aria-label="Next Slide">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </button>
+          <div className="karya-control-dots">
+            {SLIDE_DATA.map((s, idx) => (
+              <button
+                key={idx}
+                type="button"
+                className={`karya-control-dot${activeSlideIdx === idx ? ' active' : ''}`}
+                onClick={() => {
+                  if (activeSlideIdx === idx || isAnimating) return;
+                  if (idx > activeSlideIdx) transition('next');
+                  else transition('prev');
+                }}
+                aria-label={`Slide ${idx + 1}: ${s.name}`}
+              />
+            ))}
+          </div>
+
+          <button type="button" ref={nextArrowRef} className="karya-nav-arrow karya-next-arrow" aria-label="Next Slide">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
 
       </div>
 
@@ -1217,7 +1297,7 @@ export default function Karya() {
 
               <div className="karya-modal-highlights">
                 <h3 className="karya-modal-highlights-title">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
                   Fitur Unggulan
                 </h3>
                 <ul className="karya-modal-highlights-list">
@@ -1234,7 +1314,7 @@ export default function Karya() {
               {modalProject.detail.gallery && modalProject.detail.gallery.length > 0 && (
                 <div className="karya-modal-photo-section">
                   <h3 className="karya-modal-photo-title">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
                     Screenshot & Preview
                   </h3>
                   <div className="karya-photo-pyramid">
@@ -1281,7 +1361,7 @@ export default function Karya() {
                   rel="noopener noreferrer"
                   className="karya-modal-visit-btn"
                 >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>
                   Kunjungi Website
                 </a>
                 <button type="button" className="karya-modal-close-btn" onClick={closeModal}>
@@ -1337,7 +1417,7 @@ export default function Karya() {
                   aria-label="Tutup foto"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                   </svg>
                 </button>
                 {/* Navigate prev */}
@@ -1351,7 +1431,7 @@ export default function Karya() {
                     })}
                     aria-label="Foto sebelumnya"
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
                   </button>
                 )}
                 <img
@@ -1370,7 +1450,7 @@ export default function Karya() {
                     })}
                     aria-label="Foto berikutnya"
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                   </button>
                 )}
                 <div className="karya-photo-lb-caption">

@@ -237,7 +237,7 @@ export default function RelatedExperience() {
     return (
         <div
             id="certificates"
-            className="relative md:min-h-screen font-sans selection:bg-red-400/30 pt-8 sm:pt-1 pb-8 sm:pb-16 sm:py-20 flex flex-col justify-start overflow-hidden"
+            className="relative md:min-h-screen font-sans selection:bg-red-400/30 pt-6 sm:pt-8 pb-10 sm:pb-16 flex flex-col justify-start overflow-hidden"
         >
             <SectionBackdrop variant="cool" />
 
