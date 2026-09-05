@@ -18,6 +18,13 @@ export const SLIDE_DATA = [
         "Performa optimal dengan lazy loading & WebP image",
       ],
       images: ["/img/byd.webp"],
+      gallery: [
+        { src: "/img/byd.webp", caption: "Halaman beranda dealer BYD Cirebon" },
+        { src: "/img/byd.webp", caption: "Katalog kendaraan listrik & spesifikasi EV" },
+        { src: "/img/byd.webp", caption: "Detail teknologi Blade Battery & fitur keamanan" },
+        { src: "/img/byd.webp", caption: "Formulir online pemesanan unit & test drive" },
+        { src: "/img/byd.webp", caption: "Tampilan interface responsif di layar mobile" },
+      ],
     }
   },
   {
@@ -36,6 +43,15 @@ export const SLIDE_DATA = [
         "Deploy otomatis via Vercel dengan performa CDN global",
       ],
       images: ["/img/mariposas.webp"],
+      gallery: [
+        { src: "/img/mariposas.webp", caption: "Landing page modern Mariposas Tour" },
+        { src: "/img/mariposas.webp", caption: "Koleksi destinasi wisata unggulan nusantara" },
+        { src: "/img/mariposas.webp", caption: "Detail itinerary paket perjalanan lengkap" },
+        { src: "/img/mariposas.webp", caption: "Animasi smooth scroll parallax berbasis GSAP" },
+        { src: "/img/mariposas.webp", caption: "Galeri visual dokumentasi petualangan alam" },
+        { src: "/img/mariposas.webp", caption: "Formulir reservasi tur cepat & terintegrasi" },
+        { src: "/img/mariposas.webp", caption: "Tampilan footer & informasi kontak pemesanan" },
+      ],
     }
   },
   {
@@ -54,6 +70,14 @@ export const SLIDE_DATA = [
         "Terdaftar resmi di HKI Kemenkumham RI (2026)",
       ],
       images: ["/img/siladata.webp"],
+      gallery: [
+        { src: "/img/siladata.webp", caption: "Dashboard utama pengelolaan dokumen akreditasi" },
+        { src: "/img/siladata.webp", caption: "Daftar arsip dokumen terstruktur & filter status" },
+        { src: "/img/siladata.webp", caption: "Panel autentikasi & manajemen hak akses pengguna" },
+        { src: "/img/siladata.webp", caption: "Form upload & kategorisasi standar akreditasi" },
+        { src: "/img/siladata.webp", caption: "Pencarian cerdas dan ekspor laporan berkas" },
+        { src: "/img/siladata.webp", caption: "Sertifikat Hak Cipta (HKI) Kemenkumham RI" },
+      ],
     }
   },
 ];
@@ -72,15 +96,17 @@ export default function Karya() {
   const prevArrowRef = useRef(null);
   const nextArrowRef = useRef(null);
   const modalRef = useRef(null);
+  const lbTouchRef = useRef({ x: 0, y: 0 });
 
   const [modalProject, setModalProject] = useState(null);
   const [galleryIdx, setGalleryIdx] = useState(0);
+  const [photoLightbox, setPhotoLightbox] = useState(null); // { src, caption, index }
 
   const openModal = useCallback((project) => {
     setModalProject(project);
     setGalleryIdx(0);
     clearInterval(autoSlideInterval);
-    // Freeze background scroll WITHOUT jump: save current position and pin body
+    // Freeze background: save scroll, pin body with position:fixed
     const scrollY = window.scrollY;
     document.body.style.position = 'fixed';
     document.body.style.top = `-${scrollY}px`;
@@ -88,11 +114,13 @@ export default function Karya() {
     document.body.style.right = '0';
     document.body.style.overflow = 'hidden';
     document.body.dataset.scrollY = scrollY;
+    document.body.classList.add('karya-modal-open');
   }, []);
 
   const closeModal = useCallback(() => {
     setModalProject(null);
-    // Restore background scroll position
+    setPhotoLightbox(null);
+    // Restore exact scroll position
     const scrollY = parseInt(document.body.dataset.scrollY || '0', 10);
     document.body.style.position = '';
     document.body.style.top = '';
@@ -100,9 +128,36 @@ export default function Karya() {
     document.body.style.right = '';
     document.body.style.overflow = '';
     delete document.body.dataset.scrollY;
+    document.body.classList.remove('karya-modal-open');
     window.scrollTo(0, scrollY);
     startAutoSlide();
   }, []);
+
+  // Keyboard navigation for photo lightbox
+  useEffect(() => {
+    if (!photoLightbox) return;
+    const handleKey = (e) => {
+      if (e.key === 'Escape') {
+        setPhotoLightbox(null);
+      } else if (e.key === 'ArrowLeft' && modalProject?.detail?.gallery?.length > 1) {
+        setPhotoLightbox((prev) => {
+          if (!prev) return null;
+          const len = modalProject.detail.gallery.length;
+          const nextIdx = (prev.index - 1 + len) % len;
+          return { ...modalProject.detail.gallery[nextIdx], index: nextIdx };
+        });
+      } else if (e.key === 'ArrowRight' && modalProject?.detail?.gallery?.length > 1) {
+        setPhotoLightbox((prev) => {
+          if (!prev) return null;
+          const len = modalProject.detail.gallery.length;
+          const nextIdx = (prev.index + 1) % len;
+          return { ...modalProject.detail.gallery[nextIdx], index: nextIdx };
+        });
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [photoLightbox, modalProject]);
 
   const getIndex = useCallback((offset) => {
     let newIdx = activeIdx + offset;
@@ -287,9 +342,13 @@ export default function Karya() {
     isAnimating = true;
     const newIdx = getIndex(direction === 'next' ? 1 : -1);
     const newContent = SLIDE_DATA[newIdx - 1];
-    const activeSlide = sliderRef.current.querySelector('.karya-slide-container.active');
-    const imgElement = activeSlide?.querySelector('.karya-slide-img img');
-    if (!imgElement || imgElement.src === newContent.img) {
+    const activeSlide = sliderRef.current?.querySelector('.karya-slide-container.active');
+    if (!activeSlide) {
+      isAnimating = false;
+      return;
+    }
+    const imgElement = activeSlide.querySelector('.karya-slide-img img');
+    if (!imgElement) {
       isAnimating = false;
       return;
     }
@@ -301,17 +360,31 @@ export default function Karya() {
         animateTitleToCaption(newContent.name);
       }
     });
-    tl.to(imgElement, { opacity: 0, duration: 0.2 })
+    tl.to(activeSlide, { opacity: 0.25, scale: 0.97, duration: 0.2, ease: "power2.in" })
       .call(() => {
         imgElement.src = newContent.img;
+        imgElement.alt = newContent.name;
         const catElem = activeSlide.querySelector('.karya-card-category');
-        if (catElem && newContent.category) catElem.innerText = newContent.category;
+        if (catElem) catElem.innerText = newContent.category || '';
+        const descElem = activeSlide.querySelector('.karya-card-description');
+        if (descElem) descElem.innerText = newContent.description || '';
         const tagsElem = activeSlide.querySelector('.karya-card-tags');
         if (tagsElem && newContent.tags) {
           tagsElem.innerHTML = newContent.tags.map(t => `<span class="karya-card-tag">${t}</span>`).join('');
         }
+        const detailBtn = activeSlide.querySelector('.karya-card-detail-btn');
+        if (detailBtn) {
+          detailBtn.dataset.project = newContent.name;
+          detailBtn.setAttribute('aria-label', `Lihat detail ${newContent.name}`);
+        }
+        const linkElem = activeSlide.querySelector('.karya-card-link-badge');
+        if (linkElem) {
+          linkElem.href = newContent.link || '#';
+          linkElem.setAttribute('aria-label', `Kunjungi ${newContent.name}`);
+        }
+        activeSlide.dataset.projectName = newContent.name;
       })
-      .to(imgElement, { opacity: 1, duration: 0.3 });
+      .to(activeSlide, { opacity: 1, scale: 1, duration: 0.25, ease: "power2.out" });
   };
 
   const transition = (direction) => {
@@ -412,11 +485,29 @@ export default function Karya() {
       wasMobile = nowMobile;
     };
 
+    // Mobile swipe gestures
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const handleTouchStart = (e) => {
+      touchStartX = e.changedTouches[0].clientX;
+      touchStartY = e.changedTouches[0].clientY;
+    };
+    const handleTouchEnd = (e) => {
+      const diffX = e.changedTouches[0].clientX - touchStartX;
+      const diffY = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX < 0) transition('next');
+        else transition('prev');
+      }
+    };
+
     const sliderNode = sliderRef.current;
     const prevArrowNode = prevArrowRef.current;
     const nextArrowNode = nextArrowRef.current;
 
     sliderNode?.addEventListener('click', handleClickSlide);
+    sliderNode?.addEventListener('touchstart', handleTouchStart, { passive: true });
+    sliderNode?.addEventListener('touchend', handleTouchEnd, { passive: true });
     prevArrowNode?.addEventListener('click', handlePrevArrow);
     nextArrowNode?.addEventListener('click', handleNextArrow);
     window.addEventListener('resize', handleResize);
@@ -426,6 +517,8 @@ export default function Karya() {
       clearInterval(autoSlideInterval);
       clearTitleTimer();
       sliderNode?.removeEventListener('click', handleClickSlide);
+      sliderNode?.removeEventListener('touchstart', handleTouchStart);
+      sliderNode?.removeEventListener('touchend', handleTouchEnd);
       prevArrowNode?.removeEventListener('click', handlePrevArrow);
       nextArrowNode?.removeEventListener('click', handleNextArrow);
       window.removeEventListener('resize', handleResize);
@@ -1137,6 +1230,50 @@ export default function Karya() {
                 </ul>
               </div>
 
+              {/* GALLERY GRID — inverted pyramid: 3 → 2 → 1 */}
+              {modalProject.detail.gallery && modalProject.detail.gallery.length > 0 && (
+                <div className="karya-modal-photo-section">
+                  <h3 className="karya-modal-photo-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    Screenshot & Preview
+                  </h3>
+                  <div className="karya-photo-pyramid">
+                    {Array.from(
+                      { length: Math.ceil(modalProject.detail.gallery.length / 3) },
+                      (_, rowIdx) => {
+                        const rowPhotos = modalProject.detail.gallery.slice(rowIdx * 3, (rowIdx + 1) * 3);
+                        return (
+                          <div key={rowIdx} className={`karya-photo-row karya-photo-row-${rowPhotos.length}`}>
+                            {rowPhotos.map((photo, colIdx) => {
+                              const globalIdx = rowIdx * 3 + colIdx;
+                              return (
+                                <button
+                                  key={globalIdx}
+                                  type="button"
+                                  className="karya-photo-thumb"
+                                  onClick={() => setPhotoLightbox({ ...photo, index: globalIdx })}
+                                  aria-label={`Lihat foto: ${photo.caption}`}
+                                >
+                                  <img src={photo.src} alt={photo.caption} loading="lazy" />
+                                  <div className="karya-photo-thumb-overlay">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                      <circle cx="11" cy="11" r="8" />
+                                      <path d="m21 21-4.35-4.35" />
+                                      <line x1="11" y1="8" x2="11" y2="14" />
+                                      <line x1="8" y1="11" x2="14" y2="11" />
+                                    </svg>
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        );
+                      }
+                    )}
+                  </div>
+                </div>
+              )}
+
               <div className="karya-modal-footer">
                 <a
                   href={modalProject.link}
@@ -1154,11 +1291,108 @@ export default function Karya() {
             </div>
           </div>
 
+          {/* PHOTO LIGHTBOX — renders above the main modal */}
+          {photoLightbox && (
+            <div
+              className="karya-photo-lb-overlay"
+              onClick={() => setPhotoLightbox(null)}
+              role="dialog"
+              aria-modal="true"
+              aria-label={photoLightbox.caption}
+            >
+              <div
+                className="karya-photo-lb-box"
+                onClick={e => e.stopPropagation()}
+                onTouchStart={e => {
+                  lbTouchRef.current = {
+                    x: e.changedTouches[0].clientX,
+                    y: e.changedTouches[0].clientY,
+                  };
+                }}
+                onTouchEnd={e => {
+                  const diffX = e.changedTouches[0].clientX - lbTouchRef.current.x;
+                  const diffY = e.changedTouches[0].clientY - lbTouchRef.current.y;
+                  if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY) && modalProject?.detail?.gallery?.length > 1) {
+                    const len = modalProject.detail.gallery.length;
+                    if (diffX < 0) {
+                      setPhotoLightbox(prev => {
+                        if (!prev) return null;
+                        const newIdx = (prev.index + 1) % len;
+                        return { ...modalProject.detail.gallery[newIdx], index: newIdx };
+                      });
+                    } else {
+                      setPhotoLightbox(prev => {
+                        if (!prev) return null;
+                        const newIdx = (prev.index - 1 + len) % len;
+                        return { ...modalProject.detail.gallery[newIdx], index: newIdx };
+                      });
+                    }
+                  }
+                }}
+              >
+                <button
+                  type="button"
+                  className="karya-photo-lb-close"
+                  onClick={() => setPhotoLightbox(null)}
+                  aria-label="Tutup foto"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
+                {/* Navigate prev */}
+                {modalProject.detail.gallery.length > 1 && (
+                  <button
+                    type="button"
+                    className="karya-photo-lb-nav karya-photo-lb-prev"
+                    onClick={() => setPhotoLightbox(prev => {
+                      const newIdx = (prev.index - 1 + modalProject.detail.gallery.length) % modalProject.detail.gallery.length;
+                      return { ...modalProject.detail.gallery[newIdx], index: newIdx };
+                    })}
+                    aria-label="Foto sebelumnya"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                  </button>
+                )}
+                <img
+                  src={photoLightbox.src}
+                  alt={photoLightbox.caption}
+                  className="karya-photo-lb-img"
+                />
+                {/* Navigate next */}
+                {modalProject.detail.gallery.length > 1 && (
+                  <button
+                    type="button"
+                    className="karya-photo-lb-nav karya-photo-lb-next"
+                    onClick={() => setPhotoLightbox(prev => {
+                      const newIdx = (prev.index + 1) % modalProject.detail.gallery.length;
+                      return { ...modalProject.detail.gallery[newIdx], index: newIdx };
+                    })}
+                    aria-label="Foto berikutnya"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </button>
+                )}
+                <div className="karya-photo-lb-caption">
+                  <span className="karya-photo-lb-counter">{photoLightbox.index + 1} / {modalProject.detail.gallery.length}</span>
+                  <p className="karya-photo-lb-text">{photoLightbox.caption}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <style>{`
+            /* Hide navbar while modal is open */
+            body.karya-modal-open .navbar-shell {
+              opacity: 0 !important;
+              pointer-events: none !important;
+              transform: translateY(-140%) !important;
+              transition: opacity 0.25s ease, transform 0.25s ease !important;
+            }
             .karya-modal-overlay {
               position: fixed;
               inset: 0;
-              z-index: 9999;
+              z-index: 10060;
               background: rgba(0, 0, 0, 0.80);
               backdrop-filter: blur(6px);
               -webkit-backdrop-filter: blur(6px);
@@ -1167,6 +1401,8 @@ export default function Karya() {
               justify-content: center;
               padding: 1rem;
               animation: karya-modal-fadein 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+              /* Ensure only THIS element scrolls - body is frozen */
+              overflow-y: auto;
             }
             @keyframes karya-modal-fadein {
               from { opacity: 0; }
@@ -1299,7 +1535,7 @@ export default function Karya() {
               flex: 1;
               display: flex;
               flex-direction: column;
-              justify-content: space-between;
+              min-height: 0;
               padding: 2.2rem 2rem 1.8rem;
               overflow-y: auto;
               scrollbar-width: thin;
@@ -1386,6 +1622,9 @@ export default function Karya() {
               gap: 0.75rem;
               align-items: center;
               flex-wrap: wrap;
+              margin-top: 1.5rem;
+              padding-top: 1.1rem;
+              border-top: 1px solid rgba(255, 255, 255, 0.08);
             }
             .karya-modal-visit-btn {
               display: inline-flex;
@@ -1424,21 +1663,319 @@ export default function Karya() {
               background: rgba(255,255,255,0.12);
               color: #fff;
             }
-            /* RESPONSIVE */
-            @media (max-width: 640px) {
+
+            /* INVERTED PYRAMID PHOTO GALLERY */
+            .karya-modal-photo-gallery {
+              margin-top: 1.25rem;
+              margin-bottom: 1.25rem;
+              padding-top: 1.15rem;
+              border-top: 1px solid rgba(255, 255, 255, 0.08);
+            }
+            .karya-modal-photo-title {
+              display: flex;
+              align-items: center;
+              gap: 0.55rem;
+              font-size: 0.86rem;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.07em;
+              color: rgba(255, 255, 255, 0.75);
+              margin-bottom: 0.95rem;
+            }
+            .karya-modal-photo-title svg {
+              color: #ef4444;
+            }
+            .karya-photo-pyramid {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 0.65rem;
+              width: 100%;
+            }
+            .karya-photo-row {
+              display: flex;
+              justify-content: center;
+              gap: 0.65rem;
+              width: 100%;
+            }
+            .karya-photo-thumb {
+              position: relative;
+              /* Desktop: max 3 mendatar. Sisa item (misal 2 atau 1) otomatis ter-center di bawah dengan ukuran sama */
+              flex: 0 0 calc((100% - 1.3rem) / 3);
+              max-width: calc((100% - 1.3rem) / 3);
+              width: calc((100% - 1.3rem) / 3);
+              background: rgba(255, 255, 255, 0.04);
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              border-radius: 10px;
+              overflow: hidden;
+              cursor: pointer;
+              padding: 0;
+              margin: 0;
+              display: block;
+              transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s, box-shadow 0.25s;
+            }
+            .karya-photo-thumb:hover {
+              transform: translateY(-3px) scale(1.02);
+              border-color: rgba(239, 68, 68, 0.6);
+              box-shadow: 0 8px 24px rgba(220, 38, 38, 0.3);
+            }
+            .karya-photo-thumb img {
+              width: 100%;
+              height: 100%;
+              aspect-ratio: 16 / 10;
+              object-fit: cover;
+              display: block;
+              transition: transform 0.35s ease;
+            }
+            .karya-photo-thumb:hover img {
+              transform: scale(1.06);
+            }
+            .karya-photo-thumb-overlay {
+              position: absolute;
+              inset: 0;
+              background: rgba(0, 0, 0, 0.45);
+              backdrop-filter: blur(2px);
+              -webkit-backdrop-filter: blur(2px);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              opacity: 0;
+              transition: opacity 0.2s ease;
+              color: #fff;
+            }
+            .karya-photo-thumb:hover .karya-photo-thumb-overlay {
+              opacity: 1;
+            }
+
+            /* PHOTO LIGHTBOX POPUP */
+            .karya-photo-lb-overlay {
+              position: fixed;
+              inset: 0;
+              z-index: 10150;
+              background: rgba(0, 0, 0, 0.88);
+              backdrop-filter: blur(12px);
+              -webkit-backdrop-filter: blur(12px);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 1.5rem;
+              animation: karyaLbFadeIn 0.22s ease-out;
+            }
+            @keyframes karyaLbFadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            .karya-photo-lb-box {
+              position: relative;
+              max-width: 860px;
+              width: 100%;
+              background: #0d0d12;
+              border: 1px solid rgba(255, 255, 255, 0.14);
+              border-radius: 16px;
+              box-shadow: 0 25px 60px rgba(0, 0, 0, 0.88), 0 0 40px rgba(220, 38, 38, 0.18);
+              overflow: hidden;
+              display: flex;
+              flex-direction: column;
+              animation: karyaLbScaleIn 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+            }
+            @keyframes karyaLbScaleIn {
+              from { opacity: 0; transform: scale(0.92); }
+              to { opacity: 1; transform: scale(1); }
+            }
+            .karya-photo-lb-close {
+              position: absolute;
+              top: 14px;
+              right: 14px;
+              width: 36px;
+              height: 36px;
+              border-radius: 50%;
+              background: rgba(0, 0, 0, 0.65);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              color: #fff;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              z-index: 10;
+              transition: background 0.2s, transform 0.2s;
+            }
+            .karya-photo-lb-close:hover {
+              background: #dc2626;
+              transform: rotate(90deg);
+            }
+            .karya-photo-lb-nav {
+              position: absolute;
+              top: 45%;
+              transform: translateY(-50%);
+              width: 42px;
+              height: 42px;
+              border-radius: 50%;
+              background: rgba(0, 0, 0, 0.65);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              color: #fff;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              z-index: 9;
+              transition: background 0.2s, transform 0.2s, color 0.2s;
+            }
+            .karya-photo-lb-nav:hover {
+              background: rgba(220, 38, 38, 0.85);
+              transform: translateY(-50%) scale(1.1);
+            }
+            .karya-photo-lb-prev {
+              left: 14px;
+            }
+            .karya-photo-lb-next {
+              right: 14px;
+            }
+            .karya-photo-lb-img {
+              width: 100%;
+              max-height: 65vh;
+              object-fit: contain;
+              background: #060608;
+              display: block;
+            }
+            .karya-photo-lb-caption {
+              padding: 1rem 1.4rem;
+              background: #111117;
+              border-top: 1px solid rgba(255, 255, 255, 0.08);
+              display: flex;
+              align-items: center;
+              gap: 0.85rem;
+            }
+            .karya-photo-lb-counter {
+              font-size: 0.75rem;
+              font-weight: 700;
+              padding: 0.25rem 0.6rem;
+              border-radius: 6px;
+              background: rgba(220, 38, 38, 0.2);
+              color: #f87171;
+              border: 1px solid rgba(220, 38, 38, 0.3);
+              letter-spacing: 0.05em;
+              white-space: nowrap;
+            }
+            .karya-photo-lb-text {
+              margin: 0;
+              font-size: 0.92rem;
+              font-weight: 500;
+              color: rgba(255, 255, 255, 0.9);
+              line-height: 1.45;
+            }
+
+            /* RESPONSIVE FOR TABLET & MOBILE */
+            @media (max-width: 860px) {
+              .karya-modal-overlay {
+                padding: 0.75rem 0.5rem;
+                align-items: center;
+              }
               .karya-modal {
                 flex-direction: column;
-                max-height: 95vh;
+                max-height: 92svh;
+                height: auto;
+                border-radius: 16px;
               }
               .karya-modal-gallery {
-                flex: 0 0 240px;
-                min-height: 240px;
+                flex: 0 0 210px;
+                min-height: 210px;
+                height: 210px;
+                width: 100%;
+              }
+              .karya-modal-close {
+                top: 0.75rem;
+                right: 0.75rem;
+                width: 38px;
+                height: 38px;
+                background: rgba(0, 0, 0, 0.72);
+                backdrop-filter: blur(8px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                z-index: 30;
               }
               .karya-modal-info {
-                padding: 1.4rem 1.2rem 1.2rem;
+                padding: 1.25rem 1rem 1.25rem;
+                min-height: 0;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
               }
               .karya-modal-title {
-                font-size: 1.4rem;
+                font-size: 1.35rem;
+                margin-bottom: 0.6rem;
+              }
+              .karya-modal-desc {
+                font-size: 0.84rem;
+                line-height: 1.55;
+              }
+              .karya-modal-highlights {
+                padding: 0.85rem 1rem;
+                margin-bottom: 1.1rem;
+              }
+              .karya-modal-highlight-item {
+                font-size: 0.8rem;
+              }
+
+              /* PIRAMIDA TERBALIK PADA MOBILE:
+                 Tetap 3 foto per baris, sisa 2 atau 1 ter-center di bawah tanpa wrapping aneh */
+              .karya-photo-pyramid {
+                gap: 0.45rem;
+              }
+              .karya-photo-row {
+                flex-wrap: nowrap;
+                gap: 0.45rem;
+              }
+              .karya-photo-thumb {
+                flex: 0 0 calc((100% - 0.9rem) / 3);
+                max-width: calc((100% - 0.9rem) / 3);
+                width: calc((100% - 0.9rem) / 3);
+                border-radius: 8px;
+              }
+
+              .karya-modal-footer {
+                margin-top: 1.25rem;
+                padding-top: 0.9rem;
+              }
+              .karya-modal-visit-btn {
+                padding: 0.6rem 1.1rem;
+                font-size: 0.82rem;
+              }
+              .karya-modal-close-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.82rem;
+              }
+
+              /* PHOTO LIGHTBOX POPUP ON MOBILE */
+              .karya-photo-lb-overlay {
+                padding: 0.6rem;
+              }
+              .karya-photo-lb-box {
+                max-height: 94svh;
+                border-radius: 14px;
+              }
+              .karya-photo-lb-img {
+                max-height: 52svh;
+              }
+              .karya-photo-lb-close {
+                top: 10px;
+                right: 10px;
+                width: 34px;
+                height: 34px;
+                background: rgba(0, 0, 0, 0.75);
+              }
+              .karya-photo-lb-nav {
+                width: 36px;
+                height: 36px;
+              }
+              .karya-photo-lb-prev { left: 8px; }
+              .karya-photo-lb-next { right: 8px; }
+              .karya-photo-lb-caption {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.4rem;
+                padding: 0.75rem 0.9rem;
+              }
+              .karya-photo-lb-text {
+                font-size: 0.84rem;
+                line-height: 1.4;
               }
             }
           `}</style>
