@@ -69,7 +69,7 @@ const LandingPage = () => {
             Irvan Afriandi
           </h1>
           <p className="text-base sm:text-lg md:text-2xl mb-6 sm:mb-8 animate-fade-in-up text-neutral-200 font-light leading-relaxed px-2">
-            Build new, Improve existing.
+            Plan, Build, Deploy, Improve
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 animate-fade-in-up">
             <a

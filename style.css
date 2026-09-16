@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 @import "tailwindcss";
+
 *,
 *::before,
 *::after {
@@ -40,35 +41,35 @@ body {
 
 #root,
 .app {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: clip;
-  position: relative;
+	width: 100%;
+	max-width: 100%;
+	overflow-x: clip;
+	position: relative;
 }
 
 .app::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 90% 60% at 50% -20%, rgba(220, 38, 38, 0.06), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 100% 50%, rgba(168, 85, 247, 0.03), transparent 50%),
-    radial-gradient(ellipse 45% 35% at 0% 90%, rgba(185, 28, 28, 0.04), transparent 45%),
-    #000;
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background:
+		radial-gradient(ellipse 90% 60% at 50% -20%, rgba(220, 38, 38, 0.06), transparent 55%),
+		radial-gradient(ellipse 50% 40% at 100% 50%, rgba(168, 85, 247, 0.03), transparent 50%),
+		radial-gradient(ellipse 45% 35% at 0% 90%, rgba(185, 28, 28, 0.04), transparent 45%),
+		#000;
 }
 
 .app::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.2;
-  background-image: radial-gradient(rgba(239, 68, 68, 0.25) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	opacity: 0.2;
+	background-image: radial-gradient(rgba(239, 68, 68, 0.25) 1px, transparent 1px);
+	background-size: 32px 32px;
+	mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
 }
 
 img {
@@ -121,6 +122,7 @@ picture:has(.hero-bg-img) {
 		opacity: 0;
 		transform: translateY(1rem);
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -139,9 +141,11 @@ picture:has(.hero-bg-img) {
 	0% {
 		background-position: 0% 50%;
 	}
+
 	50% {
 		background-position: 100% 50%;
 	}
+
 	100% {
 		background-position: 0% 50%;
 	}
@@ -356,4 +360,3 @@ body {
 .swiper-button-prev:hover {
 	color: #fff !important;
 }
-
